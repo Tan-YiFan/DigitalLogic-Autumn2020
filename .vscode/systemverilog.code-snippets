@@ -31,7 +31,7 @@
 	"always_comb": {
 		"prefix": "always_comb",
 		"body": [
-			"always_comb begin\n",
+			"always_comb begin",
 			"\t$0",
 			"end\n"
 		]
@@ -39,7 +39,7 @@
 	"always_ff": {
 		"prefix": "always_ff",
 		"body": [
-			"always_ff @(posedge clk) begin\n",
+			"always_ff @(posedge clk) begin",
 			"\t$0",
 			"end\n"
 		]
@@ -62,6 +62,36 @@
 			"typedef enum logic [$1] {",
 			"\t$0",
 			"} $2;\n"
+		]
+	},
+	"for_generate": {
+		"prefix": "for",
+		"body": [
+			"for (genvar i = 0; i < $1; i++) begin",
+			"\t$0",
+			"end\n"
+		]
+	},
+	"unique case": {
+		"prefix": "unique",
+		"body": [
+			"unique case($1) begin",
+			"\t$0",
+			"\tdefault: begin",
+			"\t\t",
+			"\tend",
+			"end"
+		]
+	},
+	"priority case": {
+		"prefix": "priority",
+		"body": [
+			"priority case(${1:1'b1}) begin",
+			"\t$0",
+			"\tdefault: begin",
+			"\t\t",
+			"\tend",
+			"end"
 		]
 	}
 }
