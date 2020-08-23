@@ -18,7 +18,7 @@ module display (
         end
     end
     for (genvar i = 0; i < 8; i++) begin
-        AN[i] = i != an_ctl;
+        assign AN[i] = i != an_ctl;
     end
     assign A2G = segs[an_ctl];
     
@@ -46,7 +46,7 @@ module controller (
         end
     end
 
-    logic [5：0]state;
+    logic [5:0]state;
     always_ff @(posedge clk) begin
         if (~CPU_RESETN) begin
             state <= '0;
@@ -67,7 +67,7 @@ module mylut (
 );
     always_comb begin
         segs <= '1;
-        unique case(state) begin
+        unique case(state)
             'd0: {segs[7][4], segs[7][5], segs[7][0], segs[7][1], segs[7][2], segs[6][4], segs[6][5]} = '0;
             'd1: {segs[6][0], segs[7][5], segs[7][0], segs[7][1], segs[7][2], segs[6][4], segs[6][5]} = '0;
             'd2: {segs[6][0], segs[6][1], segs[7][0], segs[7][1], segs[7][2], segs[6][4], segs[6][5]} = '0;
@@ -118,7 +118,7 @@ module mylut (
             default: begin
                 
             end
-        end
+        endcase
     end
     
 endmodule
