@@ -1,5 +1,5 @@
 cd [file dirname [info script]]
-add_files ans.sv
+add_files ans.v
 add_files top.sv
 add_files lab1.sv
 set_property top top [current_fileset]
@@ -11,3 +11,5 @@ set_property SOURCE_SET sources_1 [get_filesets sim_1]
 add_files -fileset sim_1 -norecurse sim.sv
 set_property top sim [get_filesets sim_1]
 set_property top_lib xil_defaultlib [get_filesets sim_1]
+
+set_param general.maxThreads 16
