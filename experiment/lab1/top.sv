@@ -5,7 +5,8 @@ module top (
     logic [3:0]top1_in;
     logic [4:0]top2_in;
     logic [15:0]top3_in, top4_in;
-
+    logic en;
+    
     logic [15:0]top1_out;
     logic [31:0]top2_out;
     logic [3:0]top3_out, top4_out;
@@ -15,7 +16,7 @@ module top (
     logic [3:0]ans3;
     logic [3:0]ans4;
 
-    decoder4_16 top1(.in(top1_in), .out(top1_out));
+    decoder4_16 top1(.in(top1_in), .out(top1_out), .en(en));
     decoder5_32 top2(.in(top2_in), .out(top2_out));
     encoder16_4 top3(.in(top3_in), .out(top3_out));
     priority_encoder16_4 top4(.in(top4_in), .out(top4_out));
@@ -27,7 +28,7 @@ module top (
     assign top2_in = counter[4:0];
     assign top3_in = 16'b1 << counter[3:0];
     assign top4_in = counter[15:0];
-
+    assign en = counter[4];
     logic [15:0]clk_counter;
     always_ff @(posedge clk) begin
         if (~resetn) begin
@@ -57,7 +58,7 @@ module top (
     
     always_comb begin
         counter_nxt = counter;
-        if (counter < 17'h10000 && top1_out == ans1 && top2_out == ans2 && top3_out == ans3 && top4_out == ans4 ) begin
+        if (counter < 17'h10000 && top1_out == ans1 && top2_out == ans2 && top3_out == ans3 && (top4_in == 16'b0 || top4_out == ans4) ) begin
             counter_nxt = counter_nxt + 1;
         end
     end

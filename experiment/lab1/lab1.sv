@@ -1,8 +1,9 @@
 module decoder4_16 (
     input logic [3:0]in,
-    output logic [15:0]out
+    output logic [15:0]out,
+    input logic en
 );
-    // TODO: write your code here
+    // TODO: add logic here
     
 endmodule
 

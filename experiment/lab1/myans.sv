@@ -5,9 +5,10 @@
     output logic [15:0]ans1,
     output logic [31:0]ans2,
     output logic [3:0]ans3,
-    output logic [3:0]ans4
+    output logic [3:0]ans4,
+    input logic en
 );
-    ans_decoder4_16 ans_sim1(.in(in1), .out(ans1));
+    ans_decoder4_16 ans_sim1(.in(in1), .out(ans1), .en);
     ans_decoder5_32 ans_sim2(.in(in2), .out(ans2));
     ans_encoder16_4 ans_sim3(.in(in3), .out(ans3));
     ans_priority_encoder16_4 ans_sim4(.in(in4), .out(ans4));
@@ -16,10 +17,11 @@ endmodule
 
 module ans_decoder4_16 (
     input logic [3:0]in,
-    output logic [15:0]out
+    output logic [15:0]out,
+    input logic en
 );
     // TODO: write your code here
-    assign out = 16'b1 << in;
+    assign out = (16'b1 << in) & {16{en}};
     
 endmodule
 
