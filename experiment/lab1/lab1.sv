@@ -4,7 +4,7 @@ module decoder4_16 (
     input logic en
 );
     // TODO: add logic here
-    
+    assign out = {16{en}} & (16'b1 << in);
 endmodule
 
 module decoder5_32 (
@@ -13,12 +13,16 @@ module decoder5_32 (
 );
     decoder4_16 decoder1(
         // TODO: add ports here
-        
+        .in(in[3:0]),
+        .out(out[15:0]),
+        .en(~in[4])
     );
 
     decoder4_16 decoder2(
         // TODO: add ports here
-
+        .in(in[3:0]),
+        .out(out[31:16]),
+        .en(in[4])
     );
 endmodule
 

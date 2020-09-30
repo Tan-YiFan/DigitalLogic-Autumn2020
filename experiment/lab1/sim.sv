@@ -9,8 +9,8 @@ module sim (
     // TODO: modify the debug enable to 1'b0 if you don't want to debug the module
     assign debug_decoder4_16 = 1'b1;
     assign debug_decoder5_32 = 1'b1;
-    assign debug_encoder16_4 = 1'b1;
-    assign debug_priority_encoder16_4 = 1'b1;
+    assign debug_encoder16_4 = 1'b0;
+    assign debug_priority_encoder16_4 = 1'b0;
 
     logic [3:0]sim1_in;
     logic [4:0]sim2_in;
@@ -73,17 +73,17 @@ module sim (
         end else if (counter == 17'h10000) begin
             $display("PASS!\n");
             $finish;
-        end else if (sim1_out != ans1) begin
-            $display("[%d ns]: Decoder4_16 expected 0x%x, got 0x%x!\n", $time, ans1, sim1_out);
+        end else if (~(sim1_out === ans1)) begin
+            $display("[%d ns]: Decoder4_16 expected 0x %x, got 0x %x!\n", $time, ans1, sim1_out);
             $finish;
-        end else if (sim2_out != ans2) begin
-            $display("[%d ns]: Decoder5_32 expected 0x%x, got 0x%x!\n", $time, ans2, sim2_out);
+        end else if (~(sim2_out === ans2)) begin
+            $display("[%d ns]: Decoder5_32 expected 0x %x, got 0x %x!\n", $time, ans2, sim2_out);
             $finish;
-        end else if (sim3_out != ans3) begin
-            $display("[%d ns]: Encoder16_4 expected 0x%x, got 0x%x!\n", $time, ans3, sim3_out);
+        end else if (~(sim3_out === ans3)) begin
+            $display("[%d ns]: Encoder16_4 expected 0x %x, got 0x %x!\n", $time, ans3, sim3_out);
             $finish;
-        end else if (sim4_out != ans4) begin
-            $display("[%d ns]: Priority_encoder16_4 expected 0x%x, got 0x%x!\n", $time, ans4, sim4_out);
+        end else if (~(sim4_in == 16'b0 || sim4_out === ans4)) begin
+            $display("[%d ns]: Priority_encoder16_4 expected 0x %x, got 0x %x!\n", $time, ans4, sim4_out);
             $finish;
         end else if (counter_nxt == counter) begin
             $display("Unknown error!");
