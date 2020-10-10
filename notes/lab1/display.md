@@ -2,6 +2,28 @@
 
 [TOC]
 
+## 高电平有效/低电平有效
+
+用二进制所表示的信息，`0`不一定表示`false`，`1`不一定表示`true`。
+
+人们约定了一种表示信息的习惯，对于某类信息，大家都用`1`表示`true`（高电平有效）或都用`0`表示`true`（低电平有效）
+
+sv的`if`认为`1`是`true`，所以有两种写法：
+
+```verilog
+// reset: high effective
+if (reset) begin
+
+end
+
+// resetn: low effective
+if (~resetn) begin
+
+end
+```
+
+本实验采用高电平有效的约定。
+
 ## 2-4 Decoder With Enable Bit
 
 $$
