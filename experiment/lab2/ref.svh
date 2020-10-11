@@ -2,7 +2,7 @@
 `define __REF_SVH
 
 typedef logic[31:0] instruction_t;
-typedef logic[7:0] data_t;
+typedef logic[7:0] byte_t;
 typedef logic[5:0] op_t; // instr[31:26], before decode
 typedef logic[5:0] funct_t;
 typedef logic[2:0] shamt_t;
