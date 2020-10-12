@@ -4,7 +4,7 @@
 typedef logic[31:0] instruction_t;
 typedef logic[7:0] byte_t;
 typedef logic[5:0] op_t; // instr[31:26], before decode
-typedef logic[5:0] funct_t;
+typedef logic[5:0] func_t;
 typedef logic[2:0] shamt_t;
 
 
@@ -23,7 +23,7 @@ parameter F_SLT_REF = 6'b101010;
 parameter F_AND_REF = 6'b100100;
 parameter F_NOR_REF = 6'b100111;
 parameter F_OR_REF = 6'b100101;
-parameter F_XOR_REF = 6'b100100;
+parameter F_XOR_REF = 6'b100110;
 parameter F_NOT_REF = 6'b101111;
 parameter F_SLL_REF = 6'b000000;
 parameter F_SRL_REF = 6'b000010;

@@ -1,20 +1,15 @@
 `include "ref.svh"
-module ans (
+(* keep = "true" *)module ans (
     input instruction_t instr,
-    output data_t aluout,
+    output byte_t aluout,
     output decoded_op_t decoded_op,
+    output alufunc_t alufunc,
+    output logic memread,
+    output logic memwrite,
+    output logic branch_taken,
     output logic is_alu
 );
-
-    // decoder
     decode_data_t decode_data;
-
-    op_t op;
-    assign op = instr[31:26];
-
-    func_t func;
-    assign func = instr[5:0];
-
     byte_t imm1, imm2;
     assign imm1 = instr[25:18];
     assign imm2 = instr[17:10];
@@ -33,6 +28,10 @@ module ans (
                     .aluout(aluout));
 
     assign decoded_op = decode_data.op;
+    assign alufunc = decode_data.alufunc;
+    assign memread = decode_data.memread;
+    assign memwrite = decode_data.memwrite;
+    assign branch_taken = decode_data.branch_taken;
 endmodule
 
 module decoder_ref (
@@ -43,13 +42,19 @@ module decoder_ref (
     byte_t imm1, imm2;
     assign imm1 = instr[25:18];
     assign imm2 = instr[17:10];
+
+    op_t op;
+    assign op = instr[31:26];
+
+    func_t func;
+    assign func = instr[5:0];
     always_comb begin
         decode_data = '0;
         is_alu = '0;
         unique case(op)
             OP_ALU_REF: begin
                 is_alu = 1'b1;
-                unique case(funct)
+                unique case(func)
                     F_ADD_REF: begin
                         decode_data.op = ADD_REF;
                         decode_data.alufunc = ALU_ADD_REF;
