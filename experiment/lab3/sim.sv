@@ -10,8 +10,8 @@ module sim (
     always #5 clk = ~clk;
     initial begin
         clk = 1'b0;
-        resetn = 1'b1;
-        #100 resetn = 1'b0;
+        resetn = 1'b0;
+        #100 resetn = 1'b1;
     end
 
     logic [3:0] a, b;
@@ -32,8 +32,8 @@ module sim (
     always_comb begin
         counter_nxt = counter;
         if (counter_nxt != 9'h100 
-            && (({cref, cout_ref} === {c_ripple, cout_ripple}) || ~debug_ripple)
-            && (({cref, cout_ref} === {c_ahead, cout_ahead}) || ~debug_ahead)
+            && (({c_ref, cout_ref} === {c_ripple, cout_ripple}) || ~debug_ripple)
+            && (({c_ref, cout_ref} === {c_ahead, cout_ahead}) || ~debug_ahead)
             ) begin
             counter_nxt = counter_nxt + 1;
         end
@@ -52,12 +52,12 @@ module sim (
         end else if ( counter_nxt == 9'h100 ) begin
             $display("PASS!");
             $finish;
-        end else if (~(({cref, cout_ref} === {c_ripple, cout_ripple})  || ~debug_ripple)) begin
-            $display("[%d ns]: a = 0x%x, b = 0x%x, cin = 0x%x\n Ripple adder: \n Expect c = 0x%x, cout = 0x%x\n Got c = 0x%x, cout = 0x%x",
+        end else if (~(({c_ref, cout_ref} === {c_ripple, cout_ripple})  || ~debug_ripple)) begin
+            $display("[%d ns]: a = 0x %x, b = 0x %x, cin = 0x %x\n Ripple adder: \n Expect c = 0x %x, cout = 0x %x\n Got c = 0x %x, cout = 0x %x",
                     $time, a, b, cin, c_ref, cout_ref, c_ripple, cout_ripple);
             $finish;
-        end else if (~(({cref, cout_ref} === {c_ahead, cout_ahead}) || ~debug_ahead)) begin
-            $display("[%d ns]: a = 0x%x, b = 0x%x, cin = 0x%x\n Ahead adder: \n Expect c = 0x%x, cout = 0x%x\n Got c = 0x%x, cout = 0x%x",
+        end else if (~(({c_ref, cout_ref} === {c_ahead, cout_ahead}) || ~debug_ahead)) begin
+            $display("[%d ns]: a = 0x %x, b = 0x %x, cin = 0x %x\n Ahead adder: \n Expect c = 0x %x, cout = 0x %x\n Got c = 0x %x, cout = 0x %x",
                     $time, a, b, cin, c_ref, cout_ref, c_ahead, cout_ahead);
             $finish;
         end

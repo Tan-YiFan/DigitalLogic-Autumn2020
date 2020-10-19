@@ -30,8 +30,8 @@ module top (
     always_comb begin
         counter_nxt = counter;
         if (counter_nxt != 9'h100 
-            && ({cref, cout_ref} === {c_ripple, cout_ripple})
-            && ({cref, cout_ref} === {c_ahead, cout_ahead})
+            && ({c_ref, cout_ref} === {c_ripple, cout_ripple})
+            && ({c_ref, cout_ref} === {c_ahead, cout_ahead})
             ) begin
             counter_nxt = counter_nxt + 1;
         end
@@ -50,9 +50,9 @@ module top (
             {LED16_G, LED16_R, LED17_G} <= '0;
         end else if ( counter_nxt == 9'h100 ) begin
             {LED16_G, LED17_G} <= '1;
-        end else if (~({cref, cout_ref} === {c_ripple, cout_ripple})) begin
+        end else if (~({c_ref, cout_ref} === {c_ripple, cout_ripple})) begin
             {LED16_R, LED17_G} <= '1;
-        end else if (~({cref, cout_ref} === {c_ahead, cout_ahead})) begin
+        end else if (~({c_ref, cout_ref} === {c_ahead, cout_ahead})) begin
             {LED16_R, LED17_G} <= '1;
         end
     end
