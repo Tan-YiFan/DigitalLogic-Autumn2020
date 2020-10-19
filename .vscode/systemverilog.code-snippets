@@ -72,26 +72,34 @@
 			"end\n"
 		]
 	},
+	"for": {
+		"prefix": "for",
+		"body": [
+			"for (int i = 0; i < $1; i++) begin",
+			"\t$0",
+			"end\n"
+		]
+	},
 	"unique case": {
 		"prefix": "unique",
 		"body": [
-			"unique case($1) begin",
+			"unique case($1)",
 			"\t$0",
 			"\tdefault: begin",
 			"\t\t",
 			"\tend",
-			"end"
+			"endcase"
 		]
 	},
 	"priority case": {
 		"prefix": "priority",
 		"body": [
-			"priority case(${1:1'b1}) begin",
+			"priority case(${1:1'b1})",
 			"\t$0",
 			"\tdefault: begin",
 			"\t\t",
 			"\tend",
-			"end"
+			"endcase"
 		]
 	}
 }
