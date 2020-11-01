@@ -2,7 +2,8 @@ module lab4 (
     input logic [3:0]in,
     output logic [6:0]out_use138, out_use151
 );
-
+    seg_138 seg_138_inst(.in, .out(out_use138));
+    seg_151 seg_151_inst(.in, .out(out_use151));
 endmodule
 
 module seg_138 (
