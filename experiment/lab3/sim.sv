@@ -31,7 +31,7 @@ module sim (
     
     always_comb begin
         counter_nxt = counter;
-        if (counter_nxt != 9'h100 
+        if (counter_nxt != 10'h200 
             && (({c_ref, cout_ref} === {c_ripple, cout_ripple}) || ~debug_ripple)
             && (({c_ref, cout_ref} === {c_ahead, cout_ahead}) || ~debug_ahead)
             ) begin
@@ -49,7 +49,7 @@ module sim (
     always_ff @(posedge clk) begin
         if ( ~resetn ) begin
             
-        end else if ( counter_nxt == 9'h100 ) begin
+        end else if ( counter_nxt == 10'h200 ) begin
             $display("PASS!");
             $finish;
         end else if (~(({c_ref, cout_ref} === {c_ripple, cout_ripple})  || ~debug_ripple)) begin
