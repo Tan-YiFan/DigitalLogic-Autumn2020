@@ -9,8 +9,8 @@ always #5 clk_100mhz = ~clk_100mhz;
 initial begin
     clk_1hz = '0;
     clk_100mhz = '0;
-    resetn = 1'b1;
-    #100 resetn = 1'b0;
+    resetn = 1'b0;
+    #100 resetn = 1'b1;
 end
 
 // TODO: declare variables here

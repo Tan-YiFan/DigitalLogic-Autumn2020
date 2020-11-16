@@ -4,7 +4,7 @@ module clock_convert (
     output logic clk_1hz
 );
     logic [30:0] counter, counter_nxt;
-    always_ff @(posedge clk) begin
+    always_ff @(posedge clk_100mhz) begin
         if ( ~resetn ) begin
             counter <= '0;
         end else begin
