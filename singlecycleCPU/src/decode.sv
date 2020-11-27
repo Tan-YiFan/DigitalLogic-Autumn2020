@@ -11,78 +11,79 @@ module decoder (
     control_t ctl;
     decoded_op_t op;
     always_comb begin
+        ctl = '0;
+        op = ADDU;
         unique case(raw_op)
-            ctl = '0;
-            op = '0;
+            
             OP_RT: begin
                 unique case(raw_func)
                     F_ADDU: begin
                         op = ADDU;
                         ctl.alufunc = ALU_ADDU;
                         ctl.regwrite = 1'b1;
-                        ctl.alusrc = REGB;
+                        ctl.alusrcb = REGB;
                     end
                     F_SUBU: begin
                         op = SUBU;
                         ctl.alufunc = ALU_SUBU;
                         ctl.regwrite = 1'b1;
-                        ctl.alusrc = REGB;
+                        ctl.alusrcb = REGB;
                     end
                     F_SLT: begin
                         op = SLT;
                         ctl.alufunc = ALU_SLT;
                         ctl.regwrite = 1'b1;
-                        ctl.alusrc = REGB;
+                        ctl.alusrcb = REGB;
                     end
                     F_SLTU: begin
                         op = SLTU;
                         ctl.alufunc = ALU_SLTU;
                         ctl.regwrite = 1'b1;
-                        ctl.alusrc = REGB;
+                        ctl.alusrcb = REGB;
                     end
                     F_AND: begin
                         op = AND;
                         ctl.alufunc = ALU_AND;
                         ctl.regwrite = 1'b1;
-                        ctl.alusrc = REGB;
+                        ctl.alusrcb = REGB;
                     end
                     F_NOR: begin
                         op = NOR;
                         ctl.alufunc = ALU_NOR;
                         ctl.regwrite = 1'b1;
-                        ctl.alusrc = REGB;
+                        ctl.alusrcb = REGB;
                     end
                     F_OR: begin
                         op = OR;
                         ctl.alufunc = ALU_OR;
                         ctl.regwrite = 1'b1;
-                        ctl.alusrc = REGB;
+                        ctl.alusrcb = REGB;
                     end
                     F_XOR: begin
                         op = XOR;
                         ctl.alufunc = ALU_XOR;
                         ctl.regwrite = 1'b1;
-                        ctl.alusrc = REGB;
+                        ctl.alusrcb = REGB;
                     end
                     F_SLL: begin
                         op = SLL;
                         ctl.alufunc = ALU_SLL;
                         ctl.regwrite = 1'b1;
-                        ctl.alusrc = REGB;
+                        ctl.alusrcb = REGB;
                         ctl.shamt_valid = 1'b1;
                     end
                     F_SRA: begin
                         op = SRA;
                         ctl.alufunc = ALU_SRA;
                         ctl.regwrite = 1'b1;
-                        ctl.alusrc = REGB;
+                        ctl.alusrcb = REGB;
                         ctl.shamt_valid = 1'b1;
                     end
                     F_SRL: begin
-                        op = SRLV;
+                        op = SRL;
                         ctl.alufunc = ALU_SRL;
                         ctl.regwrite = 1'b1;
-                        ctl.alusrc = REGB;
+                        ctl.alusrcb = REGB;
                     end
                     F_JR: begin
                         op = JR;
@@ -99,32 +100,39 @@ module decoder (
                 op = ADDU;
                 ctl.alufunc = ALU_ADDU;
                 ctl.regwrite = 1'b1;
-                ctl.alusrc = IMM;
+                ctl.alusrcb = IMM;
             end
             OP_SLTI: begin
                 op = SLT;
                 ctl.alufunc = ALU_SLT;
                 ctl.regwrite = 1'b1;
-                ctl.alusrc = IMM;
+                ctl.alusrcb = IMM;
             end
             OP_SLTIU: begin
                 op = SLTU;
                 ctl.alufunc = ALU_SLTU;
                 ctl.regwrite = 1'b1;
-                ctl.alusrc = IMM;
+                ctl.alusrcb = IMM;
             end
             OP_ANDI: begin
                 op = AND;
                 ctl.alufunc = ALU_AND;
                 ctl.regwrite = 1'b1;
                 ctl.zeroext = 1'b1;
-                ctl.alusrc = IMM;
+                ctl.alusrcb = IMM;
+            end
+            OP_ORI: begin
+                op = OR;
+                ctl.alufunc = ALU_OR;
+                ctl.regwrite = 1'b1;
+                ctl.zeroext = 1'b1;
+                ctl.alusrcb = IMM;
             end
             OP_LUI: begin
                 op = LUI;
                 ctl.alufunc = ALU_LUI;
                 ctl.regwrite = 1'b1;
-                ctl.alusrc = IMM;
+                ctl.alusrcb = IMM;
             end
             OP_BEQ: begin
                 op = BEQ;
@@ -147,13 +155,13 @@ module decoder (
             OP_LW: begin
                 op = LW;
                 ctl.regwrite = 1'b1;
-                ctl.memtoreg = 1'b1;
-                ctl.alusrc = IMM;
+                ctl.memread = 1'b1;
+                ctl.alusrcb = IMM;
             end
             OP_SW: begin
                 op = SW;
                 ctl.memwrite = 1'b1;
-                ctl.alusrc = IMM;
+                ctl.alusrcb = IMM;
             end
             default: begin
                 op = RESERVED;
@@ -179,6 +187,6 @@ module decoder (
     assign decoded_instr.rt = rt;
     assign decoded_instr.rd = rd;
     assign decoded_instr.extended_imm = extended_imm;
-    assign writereg = writereg;
+    assign decoded_instr.writereg = writereg;
 
 endmodule

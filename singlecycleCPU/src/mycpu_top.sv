@@ -21,7 +21,5 @@ module mycpu_top(
     output logic [4:0] debug_wb_rf_wnum,
     output logic [31:0] debug_wb_rf_wdata
 );
-
-
-
+    
 endmodule

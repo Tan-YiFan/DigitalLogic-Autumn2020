@@ -7,6 +7,7 @@ parameter OP_ADDIU =       6'b001001;
 parameter OP_SLTI  =       6'b001010;
 parameter OP_SLTIU =       6'b001011;
 parameter OP_ANDI  =       6'b001100;
+parameter OP_ORI   =       6'b001101;
 parameter OP_LUI   =       6'b001111;
 parameter OP_BEQ   =       6'b000100;
 parameter OP_BNE   =       6'b000101;
@@ -66,7 +67,8 @@ typedef enum logic [4:0] {
     JR, LUI
 } decoded_op_t;
 
-typedef logic[4:0] creg_addr_t;
+parameter CREG_NUM = 32;
+typedef logic[$clog2(CREG_NUM)-1:0] creg_addr_t;
 typedef struct packed {
     decoded_op_t op;
     control_t ctl;
