@@ -21,5 +21,37 @@ module mycpu_top(
     output logic [4:0] debug_wb_rf_wnum,
     output logic [31:0] debug_wb_rf_wdata
 );
+
+    logic memwrite, memread;
+    word_t dmem_addr;
+    mycpu mycpu(
+        .clk, .resetn,
+        .pcF(inst_sram_addr),
+        .raw_instr(inst_sram_rdata),
+
+        .memwrite, .memread,
+        .dmem_addr,
+        .dmem_wdata(data_sram_wdata),
+        .dmem_rdata(32'h0000aaaa),
+        .*
+    );
+    assign inst_sram_en = 1'b1;
+    assign inst_sram_wen = '0;
+    assign inst_sram_wdata = '0;
+
+    assign data_sram_en = memwrite | memread;
+    assign data_sram_wen = {4{memwrite}};
+    assign data_sram_addr[27:0] = dmem_addr[27:0];
+    always_comb begin
+        unique case(dmem_addr[31:27])
+            4'd8: data_sram_addr[31:27] = '0;
+            4'd9: data_sram_addr[31:27] = 4'd1;
+            4'd10: data_sram_addr[31:27] = '0;
+            4'd11: data_sram_addr[31:27] = 4'd1;
+            default: begin
+                data_sram_addr[31:27] = dmem_addr[31:27];
+            end
+        endcase
+    end
     
 endmodule
