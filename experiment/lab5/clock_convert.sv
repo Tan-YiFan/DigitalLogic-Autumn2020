@@ -20,6 +20,7 @@ module clock_convert (
             counter_nxt = counter_nxt + 1;
         end
     end
-    assign clk_1hz = (counter > 31'd100_000_000);
+    // assign clk_1hz = (counter > 31'd100_000_000);
+    assign clk_1hz = counter[26];
     
 endmodule
