@@ -375,6 +375,7 @@ kseg0_kseg1:
     nop
     jal wait_1s
     nop
+    /*
     jal n21_add_test   #add
     nop
     jal wait_1s
@@ -651,6 +652,7 @@ kseg0_kseg1:
     nop
     jal wait_1s
     nop
+    */
 ###check io access
     LI  (a0, IO_SIMU_ADDR)
     LI  (t0, 0x1234)

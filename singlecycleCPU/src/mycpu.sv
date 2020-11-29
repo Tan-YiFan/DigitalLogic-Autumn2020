@@ -8,7 +8,12 @@ module mycpu (
     output word_t dmem_addr,
     output logic memread, memwrite,
     output word_t dmem_wdata,
-    input word_t dmem_rdata
+    input word_t dmem_rdata,
+
+    output word_t debug_wb_pc,
+    output logic [3:0] debug_wb_rf_wen,
+    output creg_addr_t debug_wb_rf_wnum,
+    output word_t debug_wb_rf_wdata
 );
 
     decoded_instr_t decoded_instr;
@@ -17,7 +22,7 @@ module mycpu (
         .decoded_instr
     );
 
-    word_t alusrca, alusrcb; // TODO
+    word_t alusrca, alusrcb;
     word_t aluout;
     alu alu(
         .a(alusrca),
@@ -28,12 +33,13 @@ module mycpu (
 
     word_t wd; // TODO
     word_t rd1, rd2;
+    logic valid;
     regfile regfile(
         .clk,
         .ra1(decoded_instr.rs), // read address
-        .ra2(decoded_instr.rd),
+        .ra2(decoded_instr.rt),
         .wa3(decoded_instr.writereg), // write address
-        .we(decoded_instr.ctl.regwrite), // write enable
+        .we(decoded_instr.ctl.regwrite & valid), // write enable
         .wd(wd), // write data
         .rd1(rd1), // read data
         .rd2(rd2)
@@ -44,13 +50,16 @@ module mycpu (
     word_t pcbranchD, pcjumpD, pcjrD;
     word_t pcplus4F, pcplus4D;
     logic branch_taken; 
+    
     always_ff @(posedge clk) begin
         if (~resetn) begin
             pcF <= 32'hbfc0_0000;
             pcplus4D <= '0;
+            valid <= '0;
         end else begin
             pcF <= pc_nxt;
             pcplus4D <= pcplus4F;
+            valid <= '1;
         end
     end
     
@@ -69,7 +78,7 @@ module mycpu (
     end
     assign pcplus4F = pcF + 4;
     assign pcjumpD = {
-        pcplus4D[31:38], raw_instr[25:0], 2'b00
+        pcplus4D[31:28], raw_instr[25:0], 2'b00
     };
     assign pcjrD = rd1;
     assign pcbranchD = pcplus4D + {
@@ -96,4 +105,8 @@ module mycpu (
         '0, raw_instr[10:6]
     } : rd1;
     assign alusrcb = decoded_instr.ctl.alusrcb == REGB ? rd2 : decoded_instr.extended_imm;
+    assign debug_wb_pc = pcplus4D - 4;
+    assign debug_wb_rf_wen = {4{decoded_instr.ctl.regwrite & valid}};
+    assign debug_wb_rf_wnum = decoded_instr.writereg;
+    assign debug_wb_rf_wdata = wd;
 endmodule

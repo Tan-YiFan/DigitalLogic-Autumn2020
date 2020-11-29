@@ -84,6 +84,7 @@ module decoder (
                         ctl.alufunc = ALU_SRL;
                         ctl.regwrite = 1'b1;
                         ctl.alusrcb = REGB;
+                        ctl.shamt_valid = 1'b1;
                     end
                     F_JR: begin
                         op = JR;
