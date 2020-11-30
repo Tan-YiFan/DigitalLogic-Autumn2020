@@ -1,7 +1,7 @@
 cd [file dirname [info script]]
 add_files top.sv
-add_files lab5.sv
-add_files clock_convert.sv
+add_files lab6.sv
+add_files lab6.svh
 set_property top top [current_fileset]
 
 cd [file dirname [info script]]
