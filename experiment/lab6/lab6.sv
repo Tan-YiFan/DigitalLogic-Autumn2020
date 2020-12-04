@@ -32,9 +32,11 @@ module lab6 (
     add_counter #(.N(3), .W(2)) three_s_gen
     (.clk, .resetn(resetn & has_car), .en(one_s), .carry(three_s));
 
-    enum logic[1:0] {
+    typedef enum logic[1:0] {
         HG, HY, FG, FY
-    } state, state_nxt;
+    } state_t;
+    
+    state_t state, state_nxt;
     assign red[0] = state == FG || state == FY;
     assign red[1] = state == HG || state == HY;
     assign yellow[0] = state == HY;
@@ -43,9 +45,9 @@ module lab6 (
     assign green[1] = state == FG;
     always_ff @(posedge clk) begin
         if (~resetn) begin
-            state <= HG;
+            state <= state_t'('0);
         end else if (~has_car) begin
-            state <= HG;
+            state <= state_t'('0);
         end else begin
             state <= state_nxt;
         end
