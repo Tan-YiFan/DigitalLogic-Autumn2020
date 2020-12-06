@@ -1,5 +1,7 @@
 `include "lab6.svh"
-module lab6 (
+module lab6 #(
+    parameter logic SIM = 1'b0
+)(
     input logic clk, resetn,
 
     input logic has_car,
@@ -8,7 +10,7 @@ module lab6 (
     output logic [1:0][3:0] hour, minute, second
 );
     logic one_second;
-    add_counter #(.N(2_000_000)) one_second_gen 
+    add_counter #(.N(SIM ? 100 : 2_000_000)) one_second_gen 
     (.clk, .resetn, .en(1'b1), .carry(one_second));
 
     logic [3:0] carry;
@@ -27,7 +29,7 @@ module lab6 (
     assign hour[1] = hour_temp / 10;
 
     logic one_s, three_s;
-    add_counter #(.N(100_000_000)) one_s_gen
+    add_counter #(.N(SIM ? 10 : 100_000_000)) one_s_gen
     (.clk, .resetn(resetn & has_car), .en(1'b1), .carry(one_s));
     add_counter #(.N(3), .W(2)) three_s_gen
     (.clk, .resetn(resetn & has_car), .en(one_s), .carry(three_s));
@@ -53,6 +55,7 @@ module lab6 (
         end
     end
     always_comb begin
+        state_nxt = state;
         unique case(state)
             HG: begin
                 if (three_s) begin
