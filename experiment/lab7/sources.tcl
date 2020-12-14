@@ -1,6 +1,7 @@
 cd [file dirname [info script]]
 add_files top.sv
 add_files lab7.sv
+add_files ram2.sv
 set_property top top [current_fileset]
 
 cd [file dirname [info script]]
