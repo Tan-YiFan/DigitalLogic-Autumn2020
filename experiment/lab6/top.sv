@@ -6,7 +6,7 @@ module top (
     output logic [6:0]A2G,
     output logic [7:0]AN
 );
-    logic [10:0] counter;
+    logic [15:0] counter;
     logic [7:0][6:0] segs;
 
     logic [7:0][3:0] raw_segs; // TODO: drive these signals
@@ -23,8 +23,8 @@ module top (
         seg7 seg7_inst (.in(raw_segs[i]), .out(segs[i]));
     end
 
-    assign A2G = segs[counter[10:8]];
-    assign AN[7:0] = ~({7'b0, resetn} << counter[10:8]);
+    assign A2G = segs[counter[15:13]];
+    assign AN[7:0] = ~({7'b0, resetn} << counter[15:13]);
 
     logic [1:0] red, yellow, green; // TODO: drive these signals
     assign LED16_G = green[0] | yellow[0];
